@@ -1,0 +1,23 @@
+# Normalize line endings so the repo does not churn between Windows and
+# Linux/macOS checkouts. Without this, every file flips CRLF<->LF depending on
+# each developer's core.autocrlf and produces whole-file diffs.
+* text=auto eol=lf
+
+# Files that must stay CRLF (Windows-only tooling)
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binary assets: never touched by the text filter.
+*.png binary
+*.ico binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.crt binary
+
+# Lockfiles are generated; keep them LF for reproducible installs.
+package-lock.json text eol=lf

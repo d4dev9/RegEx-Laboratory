@@ -1,0 +1,114 @@
+{
+  "$comment": [
+    "The Regex Lab mark: a capture group, (.*).",
+    "",
+    "This file is the single source of truth for the geometry and the palette.",
+    "Both readers import it, so the header logo and the favicons cannot drift:",
+    "  - scripts/generate-assets.mjs renders it to every PNG in public/",
+    "  - src/components/shared/Logo.tsx renders it inline in the page",
+    "",
+    "Coordinates are in a 160x100 glyph box, not a square one, because `(.*)` is",
+    "four characters of roughly equal advance: the mark is wider than it is tall,",
+    "and squashing it into a square is what made the previous icon look wrong.",
+    "Each tile scales this box to fit and centres it.",
+    "",
+    "The palette is here rather than in tokens.css on purpose. These are brand",
+    "colours for a mark that has to read at 16 pixels on an unknown background;",
+    "they are artwork, not interface, and they are deliberately not the UI accent"
+  ],
+
+  "colors": {
+    "tile": "#090d16",
+    "paren": "#6366f1",
+    "dot": "#a855f7",
+    "star": "#38bdf8"
+  },
+
+  "og": {
+    "background": "#0b0f19",
+    "accentBarFrom": "#6366f1",
+    "accentBarTo": "#a855f7",
+    "title": "#f8fafc",
+    "subtitle": "#94a3b8"
+  },
+
+  "glyph": {
+    "width": 160,
+    "height": 100,
+
+    "open": {
+      "topX": 31,
+      "bottomX": 31,
+      "topY": 16,
+      "bottomY": 84,
+      "bulgeX": 11
+    },
+
+    "dot": {
+      "cx": 61,
+      "cy": 63,
+      "r": 8.5
+    },
+
+    "star": {
+      "cx": 99,
+      "cy": 45,
+      "r": 15.5,
+      "innerRatio": 0.34
+    },
+
+    "close": {
+      "topX": 129,
+      "bottomX": 129,
+      "topY": 16,
+      "bottomY": 84,
+      "bulgeX": 149
+    }
+  },
+
+  "$tiers": [
+    "Stroke weight, padding and star arm count change with the rendered size.",
+    "This is the whole reason the mark survives a 16px favicon.",
+    "",
+    "At 16px the glyph box is about 13px wide, so a dot of radius 8.5 in glyph",
+    "units comes out under one pixel across and simply disappears, and a",
+    "five-armed asterisk with a 9-unit stroke fuses into a blob. Each tier below",
+    "trades fidelity for ink: bigger relative strokes, a larger dot, and at the",
+    "smallest sizes a four-armed star, which is still an asterisk but survives",
+    "at four pixels."
+  ],
+  "tiers": [
+    {
+      "maxSize": 20,
+      "padding": 0.035,
+      "stroke": 15,
+      "dotScale": 1.5,
+      "starArms": 4,
+      "starScale": 1.12
+    },
+    {
+      "maxSize": 36,
+      "padding": 0.055,
+      "stroke": 12.5,
+      "dotScale": 1.3,
+      "starArms": 4,
+      "starScale": 1.06
+    },
+    {
+      "maxSize": 128,
+      "padding": 0.07,
+      "stroke": 10,
+      "dotScale": 1.1,
+      "starArms": 5,
+      "starScale": 1
+    },
+    {
+      "maxSize": 10000,
+      "padding": 0.075,
+      "stroke": 9,
+      "dotScale": 1,
+      "starArms": 5,
+      "starScale": 1
+    }
+  ]
+}

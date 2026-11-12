@@ -1,0 +1,78 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/**
+ * A user of the app.
+ *
+ * `authId` is the UUID that Supabase Auth assigns in `auth.users`. The row is
+ * created on the first authenticated request rather than by a webhook: the OAuth
+ * flow has no event to hang a webhook on, and provisioning the row on read means
+ * there is one code path instead of two that can disagree.
+ *
+ * Erasing an account removes this row and the matching `auth.users` entry. If
+ * only the row went, the still-valid access token would recreate it on the next
+ * request.
+ */
+model User {
+  id            String    @id @default(cuid())
+  authId        String    @unique
+  email         String    @unique
+  name          String?
+  avatarUrl     String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  patterns      Pattern[]
+  testCases     TestCase[]
+
+  @@map("users")
+}
+
+model Pattern {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  regex       String
+  flags       String    @default("gm")
+  language    String    @default("javascript")
+  isPublic    Boolean   @default(false)
+  tags        String[]
+  /**
+   * The sample text published with this pattern.
+   *
+   * Only ever set on a public pattern: it is the text a shared link replays,
+   * so it has to be readable by whoever opens that link. A private pattern
+   * keeps no test text at all, which is what the privacy policy promises.
+   */
+  sharedText  String?
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  testCases   TestCase[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([isPublic])
+  @@map("patterns")
+}
+
+model TestCase {
+  id          String   @id @default(cuid())
+  input       String
+  expected    Boolean
+  description String?
+  patternId   String
+  pattern     Pattern  @relation(fields: [patternId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+
+  @@index([patternId])
+  @@index([userId])
+  @@map("test_cases")
+}

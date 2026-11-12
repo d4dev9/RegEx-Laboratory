@@ -1,0 +1,75 @@
+@import "tailwindcss";
+@import "../styles/tokens.css";
+@import "../styles/base.css";
+@import "../styles/ui.css";
+@import "../styles/lab.css";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme inline {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --color-slate-50: var(--s-50);
+  --color-slate-100: var(--s-100);
+  --color-slate-200: var(--s-200);
+  --color-slate-300: var(--s-300);
+  --color-slate-400: var(--s-400);
+  --color-slate-500: var(--s-500);
+  --color-slate-600: var(--s-600);
+  --color-slate-700: var(--s-700);
+  --color-slate-800: var(--s-800);
+  --color-slate-900: var(--s-900);
+  --color-slate-950: var(--s-950);
+
+  --color-indigo-300: var(--a-300);
+  --color-indigo-400: var(--a-400);
+  --color-indigo-500: var(--a-500);
+  --color-indigo-600: var(--a-600);
+  --color-indigo-700: var(--a-700);
+
+  --radius-md: 6px;
+  --radius-lg: 8px;
+
+  --accent: var(--accent);
+  --success: var(--success);
+  --danger: var(--danger);
+}
+
+:root {
+  --s-50: var(--bg-subtle);
+  --s-100: var(--bg-hover);
+  --s-200: var(--border);
+  --s-300: var(--border-hover);
+  --s-400: var(--fg-faint);
+  --s-500: var(--fg-muted);
+  --s-600: var(--fg-muted);
+  --s-700: var(--border-hover);
+  --s-800: var(--bg-hover);
+  --s-900: var(--bg-subtle);
+  --s-950: var(--bg);
+
+  --a-300: var(--accent);
+  --a-400: var(--accent);
+  --a-500: var(--accent);
+  --a-600: var(--accent);
+  --a-700: var(--accent);
+}
+
+@layer base {
+  ::selection {
+    background-color: var(--accent);
+    color: var(--bg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
